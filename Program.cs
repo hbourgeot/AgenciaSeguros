@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AgenciaSeguros.Datos;
+using System;
 using System.Collections.Generic;
 using System.Data.SQLite;
 using System.IO;
@@ -16,20 +17,12 @@ namespace AgenciaSeguros
     [STAThread]
     static void Main()
     {
-      // Especifica el nombre y la ubicación de la base de datos
-      var databaseFile = "AgenciaSeguros.db";
+      using (var context = new AppDbContext())
+      {
+        // Asegurarse de que la base de datos esté creada
+        context.Database.Initialize(force: false);
+      }
 
-      // Verifica si el archivo de la base de datos ya existe
-      if (!File.Exists(databaseFile))
-      {
-        // Si no existe, crea el archivo de la base de datos
-        SQLiteConnection.CreateFile(databaseFile);
-        Console.WriteLine($"Base de datos '{databaseFile}' creada exitosamente.");
-      }
-      else
-      {
-        Console.WriteLine($"La base de datos '{databaseFile}' ya existe.");
-      }
       Application.EnableVisualStyles();
       Application.SetCompatibleTextRenderingDefault(false);
       Application.Run(new Form1());
