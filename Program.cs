@@ -32,14 +32,14 @@ namespace AgenciaSeguros
         AppDomain.CurrentDomain.SetData("DataDirectory", dataDirectory);
       }
 
-      // Verifica si el archivo de la base de datos ya existe
+      string databaseFile = Path.Combine(dataDirectory, "AgenciaSeguros.db");
+      System.Console.WriteLine($"Database file: {databaseFile}");
       if (!File.Exists(databaseFile))
       {
-        // Si no existe, crea el archivo de la base de datos
         SQLiteConnection.CreateFile(databaseFile);
-        Console.WriteLine($"Base de datos '{databaseFile}' creada exitosamente.");
       }
-      else
+
+      using (var context = new AppDbContext())
       {
         // Asegurarse de que la base de datos esté creada
         context.Database.Initialize(force: false);
