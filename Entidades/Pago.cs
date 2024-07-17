@@ -11,6 +11,7 @@ namespace AgenciaSeguros.Entidades
     public int Id { get; set; }
     public decimal Monto { get; set; }
     public DateTime FechaPago { get; set; }
+    public string Descripcion { get; set; }
     public int ClienteId { get; set; }
     public Cliente Cliente { get; set; }
   }
