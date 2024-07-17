@@ -83,12 +83,10 @@ namespace AgenciaSeguros.Vistas
             if (rol == "Administrador")
             {
               formToOpen = new FormAdmin(); // Asegúrate de tener un formulario FormAdmin
-              MessageBox.Show("Que el admin sea eterno.", "Info", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
             else if (rol == "Usuario")
             {
               formToOpen = new FormUsuario(); // Asegúrate de tener un formulario FormUsuario
-              MessageBox.Show("Hola, que haces?", "Info", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
 
             if (formToOpen != null)
