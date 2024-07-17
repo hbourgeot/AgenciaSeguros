@@ -14,6 +14,13 @@
                         Id = c.Int(nullable: false, identity: true),
                         Nombre = c.String(maxLength: 2147483647),
                         Email = c.String(maxLength: 2147483647),
+                        Telefono = c.String(maxLength: 2147483647),
+                        Direccion = c.String(maxLength: 2147483647),
+                        Ciudad = c.String(maxLength: 2147483647),
+                        Estado = c.String(maxLength: 2147483647),
+                        CodigoPostal = c.String(maxLength: 2147483647),
+                        Pais = c.String(maxLength: 2147483647),
+                        Documento = c.String(maxLength: 2147483647),
                     })
                 .PrimaryKey(t => t.Id);
             
@@ -35,10 +42,18 @@
                 c => new
                     {
                         Id = c.Int(nullable: false, identity: true),
-                        NumeroPoliza = c.String(maxLength: 2147483647),
                         FechaEmision = c.DateTime(nullable: false),
                         FechaVencimiento = c.DateTime(nullable: false),
+                        Modelo = c.String(maxLength: 2147483647),
+                        Marca = c.String(maxLength: 2147483647),
+                        Anio = c.String(maxLength: 2147483647),
+                        Placa = c.String(maxLength: 2147483647),
+                        Color = c.String(maxLength: 2147483647),
                         ClienteId = c.Int(nullable: false),
+                        Tipo = c.String(maxLength: 2147483647),
+                        EstadoPoliza = c.String(maxLength: 2147483647),
+                        MontoCobertura = c.Decimal(nullable: false, precision: 18, scale: 2),
+                        Prima = c.Decimal(nullable: false, precision: 18, scale: 2),
                     })
                 .PrimaryKey(t => t.Id)
                 .ForeignKey("dbo.Clientes", t => t.ClienteId, cascadeDelete: true)
@@ -63,7 +78,12 @@
                     {
                         Id = c.Int(nullable: false, identity: true),
                         Nombre = c.String(maxLength: 2147483647),
+                        Correo = c.String(maxLength: 2147483647),
+                        Edad = c.Int(nullable: false),
+                        Telefono = c.String(maxLength: 2147483647),
+                        FechaRegistro = c.DateTime(nullable: false),
                         Contraseña = c.String(maxLength: 2147483647),
+                        activo = c.Boolean(nullable: false),
                         Rol = c.String(maxLength: 2147483647),
                     })
                 .PrimaryKey(t => t.Id);

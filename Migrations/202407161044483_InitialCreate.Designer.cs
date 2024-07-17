@@ -13,7 +13,7 @@ namespace AgenciaSeguros.Migraciones
         
         string IMigrationMetadata.Id
         {
-            get { return "202407140629318_InitialCreate"; }
+            get { return "202407161044483_InitialCreate"; }
         }
         
         string IMigrationMetadata.Source
