@@ -143,5 +143,19 @@ namespace AgenciaSeguros.Vistas
       string pattern = @"^[^@\s]+@[^@\s]+\.[^@\s]+$";
       return Regex.IsMatch(email, pattern);
     }
+
+    private void Form1_Load(object sender, EventArgs e)
+    {
+    }
+
+    private void label4_Click(object sender, EventArgs e)
+    {
+
+    }
+
+    private void label5_Click(object sender, EventArgs e)
+    {
+
+    }
   }
 }

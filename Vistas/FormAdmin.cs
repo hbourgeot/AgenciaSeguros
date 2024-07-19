@@ -339,5 +339,100 @@ namespace AgenciaSeguros.Vistas
       GeneradorDeReporte.ReporteGeneral(saveFileDialog.FileName);
       MessageBox.Show("Reporte guardado exitosamente como PDF en " + saveFileDialog.FileName, "Reporte guardado", MessageBoxButtons.OK, MessageBoxIcon.Information);
     }
+
+    private void toolTip_Popup(object sender, PopupEventArgs e)
+    {
+
+    }
+
+    private void clientesPage_Click(object sender, EventArgs e)
+    {
+
+    }
+
+    private void tabPage7_Click(object sender, EventArgs e)
+    {
+
+    }
+
+    private void label2_Click(object sender, EventArgs e)
+    {
+
+    }
+
+    private void label1_Click(object sender, EventArgs e)
+    {
+
+    }
+
+    private void usuariosTab_Click(object sender, EventArgs e)
+    {
+
+    }
+
+    private void label3_Click(object sender, EventArgs e)
+    {
+
+    }
+
+    private void usuariosData_CellContentClick(object sender, DataGridViewCellEventArgs e)
+    {
+
+    }
+
+    private void polizasPage_Click(object sender, EventArgs e)
+    {
+
+    }
+
+    private void label5_Click(object sender, EventArgs e)
+    {
+
+    }
+
+    private void label4_Click(object sender, EventArgs e)
+    {
+
+    }
+
+    private void pagosPage_Click(object sender, EventArgs e)
+    {
+
+    }
+
+    private void label6_Click(object sender, EventArgs e)
+    {
+
+    }
+
+    private void pagosData_CellContentClick(object sender, DataGridViewCellEventArgs e)
+    {
+
+    }
+
+    private void reclamosPage_Click(object sender, EventArgs e)
+    {
+
+    }
+
+    private void label7_Click(object sender, EventArgs e)
+    {
+
+    }
+
+    private void reclamosData_CellContentClick(object sender, DataGridViewCellEventArgs e)
+    {
+
+    }
+
+    private void button13_Click(object sender, EventArgs e)
+    {
+
+    }
+
+    private void button14_Click(object sender, EventArgs e)
+    {
+
+    }
   }
 }
