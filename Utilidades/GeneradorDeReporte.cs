@@ -12,8 +12,15 @@ using AgenciaSeguros.Vistas.Componentes;
 
 namespace AgenciaSeguros.Utilidades
 {
+  /// <summary>
+  /// Clase para generar reportes en formato PDF a partir de datos de la aplicación.
+  /// </summary>
   internal class GeneradorDeReporte
   {
+    /// <summary>
+    /// Genera un reporte de pólizas y lo guarda en formato PDF en la ruta especificada.
+    /// </summary>
+    /// <param name="outputPath">Ruta donde se guardará el archivo PDF.</param>
     public static void ReportePolizas(string outputPath)
     {
       string baseDirectory = AppDomain.CurrentDomain.BaseDirectory;
@@ -28,6 +35,7 @@ namespace AgenciaSeguros.Utilidades
 
       using (var context = new AppDbContext())
       {
+        // Obtener los datos de las pólizas
         ReportDataSource rds = new ReportDataSource("PolizasDataSet", context.Polizas.Select(u => new
         {
           u.Marca,
@@ -61,6 +69,10 @@ namespace AgenciaSeguros.Utilidades
       Console.WriteLine("Reporte guardado exitosamente como PDF en " + outputPath);
     }
 
+    /// <summary>
+    /// Genera un reporte general que incluye datos de pólizas, clientes, pagos y reclamos, y lo guarda en formato PDF en la ruta especificada.
+    /// </summary>
+    /// <param name="outputPath">Ruta donde se guardará el archivo PDF.</param>
     public static void ReporteGeneral(string outputPath)
     {
       string baseDirectory = AppDomain.CurrentDomain.BaseDirectory;
@@ -75,6 +87,7 @@ namespace AgenciaSeguros.Utilidades
 
       using (var context = new AppDbContext())
       {
+        // Obtener los datos de las pólizas
         ReportDataSource rds = new ReportDataSource("PolizasData", context.Polizas.Select(u => new
         {
           u.Marca,
@@ -87,6 +100,7 @@ namespace AgenciaSeguros.Utilidades
         report.DataSources.Clear();
         report.DataSources.Add(rds);
 
+        // Obtener los datos de los clientes
         ReportDataSource rds2 = new ReportDataSource("ClientesData", context.Clientes.Select(c => new
         {
           c.Nombre,
@@ -96,6 +110,7 @@ namespace AgenciaSeguros.Utilidades
         }).ToList());
         report.DataSources.Add(rds2);
 
+        // Obtener los datos de los pagos
         ReportDataSource rds3 = new ReportDataSource("PagosData", context.Pagos.Select(p => new
         {
           p.Monto,
@@ -105,6 +120,7 @@ namespace AgenciaSeguros.Utilidades
         }).ToList());
         report.DataSources.Add(rds3);
 
+        // Obtener los datos de los reclamos
         ReportDataSource rds4 = new ReportDataSource("ReclamosData", context.Reclamos.Select(r => new
         {
           r.FechaReclamo,

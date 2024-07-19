@@ -13,7 +13,8 @@ namespace AgenciaSeguros.Migraciones
 
     protected override void Seed(AgenciaSeguros.Datos.AppDbContext context)
     {
-      // Seed method will be called after migrating to the latest version.
+      // El método Seed se llamará después de migrar a la versión más reciente.
+      // Aquí puedes agregar datos iniciales a la base de datos.
     }
   }
 }

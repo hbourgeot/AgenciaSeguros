@@ -12,6 +12,9 @@ using System.Windows.Forms;
 
 namespace AgenciaSeguros.Vistas
 {
+  /// <summary>
+  /// Formulario principal de inicio de sesión.
+  /// </summary>
   public partial class Form1 : Form
   {
     private bool showPassword = false;
@@ -34,6 +37,9 @@ namespace AgenciaSeguros.Vistas
       button3.Enabled = false; // Deshabilitar el botón de enviar inicialmente
     }
 
+    /// <summary>
+    /// Maneja el evento de clic del botón para mostrar/ocultar la contraseña.
+    /// </summary>
     private void button1_Click(object sender, EventArgs e)
     {
       setShowPassword(!getShowPassword());
@@ -49,12 +55,17 @@ namespace AgenciaSeguros.Vistas
       }
     }
 
+    /// <summary>
+    /// Maneja el evento de clic del botón para salir de la aplicación.
+    /// </summary>
     private void button2_Click(object sender, EventArgs e)
     {
       Application.Exit();
     }
 
-    // login
+    /// <summary>
+    /// Maneja el evento de clic del botón de iniciar sesión.
+    /// </summary>
     private void button3_Click(object sender, EventArgs e)
     {
       string correo = maskedTextBox2.Text;
@@ -112,6 +123,9 @@ namespace AgenciaSeguros.Vistas
       }
     }
 
+    /// <summary>
+    /// Valida el formulario de inicio de sesión.
+    /// </summary>
     private void ValidateForm(object sender, EventArgs e)
     {
       bool isEmailValid = ValidateEmail(maskedTextBox2.Text);
@@ -138,6 +152,11 @@ namespace AgenciaSeguros.Vistas
       }
     }
 
+    /// <summary>
+    /// Valida la dirección de correo electrónico.
+    /// </summary>
+    /// <param name="email">Correo electrónico a validar.</param>
+    /// <returns>True si el correo es válido, false en caso contrario.</returns>
     private bool ValidateEmail(string email)
     {
       string pattern = @"^[^@\s]+@[^@\s]+\.[^@\s]+$";

@@ -1,22 +1,23 @@
 ﻿using AgenciaSeguros.Datos;
 using AgenciaSeguros.Entidades;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
 using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace AgenciaSeguros.Vistas.Componentes
 {
+  /// <summary>
+  /// Formulario para agregar o editar un cliente.
+  /// </summary>
   public partial class Cliente : Form
   {
     private int? _clienteId;
 
+    /// <summary>
+    /// Constructor del formulario Cliente.
+    /// </summary>
+    /// <param name="clienteId">ID del cliente a editar, si es null se creará un nuevo cliente.</param>
     public Cliente(int? clienteId)
     {
       InitializeComponent();
@@ -35,6 +36,8 @@ namespace AgenciaSeguros.Vistas.Componentes
       }
 
       btnGuardar.Enabled = false;
+
+      // Asignar eventos de validación a los campos de texto.
       correoText.TextChanged += new EventHandler(ValidateForm);
       nombreText.TextChanged += new EventHandler(ValidateForm);
       telefonoText.TextChanged += new EventHandler(ValidateForm);
@@ -46,7 +49,9 @@ namespace AgenciaSeguros.Vistas.Componentes
       direccionText.TextChanged += new EventHandler(ValidateForm);
     }
 
-
+    /// <summary>
+    /// Carga los datos del cliente desde la base de datos si se está editando.
+    /// </summary>
     private void LoadClientemData()
     {
       using (var context = new AppDbContext())
@@ -67,8 +72,12 @@ namespace AgenciaSeguros.Vistas.Componentes
       }
     }
 
+    /// <summary>
+    /// Valida los campos del formulario y habilita o deshabilita el botón de guardar.
+    /// </summary>
     private void ValidateForm(object sender, EventArgs e)
     {
+      // Validaciones de los campos de texto.
       bool isEmailValid = ValidateEmail(correoText.Text);
       bool nombreCompleto = !string.IsNullOrWhiteSpace(nombreText.Text) && nombreText.Text.Length < 200;
       bool telefonoLlenado = !string.IsNullOrWhiteSpace(telefonoText.Text) && telefonoText.Text.Length < 21;
@@ -81,6 +90,7 @@ namespace AgenciaSeguros.Vistas.Componentes
 
       btnGuardar.Enabled = isEmailValid && nombreCompleto && telefonoLlenado && codPostaLleno && documentoLleno && paisLleno && estadoLleno && ciudadLleno && direccionLleno;
 
+      // Asignar mensajes de error a los campos si no son válidos.
       if (!isEmailValid)
       {
         errorProvider1.SetError(correoText, "Correo electrónico no válido.");
@@ -163,17 +173,28 @@ namespace AgenciaSeguros.Vistas.Componentes
       }
     }
 
+    /// <summary>
+    /// Valida si un correo electrónico tiene el formato correcto.
+    /// </summary>
+    /// <param name="email">Correo electrónico a validar.</param>
+    /// <returns>True si el correo es válido, false de lo contrario.</returns>
     private bool ValidateEmail(string email)
     {
       string pattern = @"^[^@\s]+@[^@\s]+\.[^@\s]+$";
       return Regex.IsMatch(email, pattern);
     }
 
+    /// <summary>
+    /// Evento al hacer clic en el botón de cancelar. Cierra el formulario actual.
+    /// </summary>
     private void button2_Click(object sender, EventArgs e)
     {
       this.Close();
     }
 
+    /// <summary>
+    /// Evento al hacer clic en el botón de guardar. Guarda o actualiza los datos del cliente.
+    /// </summary>
     private void btnGuardar_Click(object sender, EventArgs e)
     {
       string nombre = nombreText.Text;
@@ -190,6 +211,7 @@ namespace AgenciaSeguros.Vistas.Componentes
       {
         if (_clienteId.HasValue)
         {
+          // Actualizar cliente existente
           var cliente = context.Clientes.Find(_clienteId.Value);
           if (cliente != null)
           {
@@ -206,6 +228,7 @@ namespace AgenciaSeguros.Vistas.Componentes
         }
         else
         {
+          // Crear un nuevo cliente
           var cliente = new Entidades.Cliente()
           {
             Nombre = nombre,

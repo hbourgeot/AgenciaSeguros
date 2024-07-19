@@ -1,20 +1,22 @@
 ﻿using AgenciaSeguros.Datos;
 using AgenciaSeguros.Entidades;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace AgenciaSeguros.Vistas.Componentes
 {
+  /// <summary>
+  /// Formulario para agregar o editar una póliza.
+  /// </summary>
   public partial class Polizas : Form
   {
     private int? _polizaId;
+
+    /// <summary>
+    /// Constructor del formulario Polizas.
+    /// </summary>
+    /// <param name="polizaId">ID de la póliza a editar, si es null se creará una nueva póliza.</param>
     public Polizas(int? polizaId)
     {
       InitializeComponent();
@@ -31,6 +33,7 @@ namespace AgenciaSeguros.Vistas.Componentes
       }
       LoadPolizaData();
 
+      // Asignar eventos de validación a los campos del formulario.
       fechaVencimiento.ValueChanged += (s, e) => ValidateForm();
       fechaEmision.ValueChanged += (s, e) => ValidateForm();
       marcaText.TextChanged += (s, e) => ValidateForm();
@@ -44,14 +47,17 @@ namespace AgenciaSeguros.Vistas.Componentes
       estadoText.TextChanged += (s, e) => ValidateForm();
       montoCoberturaNum.ValueChanged += (s, e) => ValidateForm();
 
-      btnGuardar.Enabled = false;
+      btnGuardar.Enabled = false; // Deshabilitar el botón de guardar inicialmente
     }
 
+    /// <summary>
+    /// Carga los datos de la póliza desde la base de datos si se está editando, y los clientes para el ComboBox.
+    /// </summary>
     private void LoadPolizaData()
     {
       using (var context = new AppDbContext())
       {
-        // cargar el combobox con los clientes, mostrando el nombre y el id debe ser el valor
+        // Cargar el ComboBox con los clientes, mostrando el nombre y el ID debe ser el valor.
         clienteCombobox.DataSource = context.Clientes.Select(c => new
         {
           c.Id,
@@ -60,6 +66,7 @@ namespace AgenciaSeguros.Vistas.Componentes
         clienteCombobox.DisplayMember = "Nombre";
         clienteCombobox.ValueMember = "Id";
 
+        // Configurar el rango de fechas para los controles de fecha.
         fechaEmision.MinDate = new DateTime(DateTime.Now.Year - 10, 1, 1);
         fechaEmision.MaxDate = DateTime.Now;
 
@@ -71,12 +78,12 @@ namespace AgenciaSeguros.Vistas.Componentes
           return;
         }
 
+        // Cargar los datos de la póliza si se está editando.
         var poliza = context.Polizas.Find(_polizaId.Value);
         if (poliza != null)
         {
           fechaEmision.Value = poliza.FechaEmision;
           fechaVencimiento.Value = poliza.FechaVencimiento;
-
           marcaText.Text = poliza.Marca;
           modeloText.Text = poliza.Modelo;
           anioText.Text = poliza.Anio;
@@ -91,33 +98,44 @@ namespace AgenciaSeguros.Vistas.Componentes
       }
     }
 
+    /// <summary>
+    /// Evento al hacer clic en el botón de cancelar. Cierra el formulario actual.
+    /// </summary>
     private void button2_Click(object sender, EventArgs e)
     {
       this.Close();
     }
 
+    /// <summary>
+    /// Evento al hacer clic en el botón de guardar. Guarda o actualiza los datos de la póliza.
+    /// </summary>
     private void btnGuardar_Click(object sender, EventArgs e)
     {
       using (var context = new AppDbContext())
       {
         if (_polizaId.HasValue)
         {
+          // Actualizar póliza existente
           var poliza = context.Polizas.Find(_polizaId.Value);
-          poliza.Marca = marcaText.Text;
-          poliza.Modelo = modeloText.Text;
-          poliza.Anio = anioText.Text;
-          poliza.Placa = placaText.Text;
-          poliza.Color = colorAutoText.Text;
-          poliza.Prima = primaNum.Value;
-          poliza.ClienteId = (int)clienteCombobox.SelectedValue;
-          poliza.Tipo = tipoPolizaText.Text;
-          poliza.EstadoPoliza = estadoText.Text;
-          poliza.MontoCobertura = montoCoberturaNum.Value;
-          poliza.FechaEmision = fechaEmision.Value;
-          poliza.FechaVencimiento = fechaVencimiento.Value;
+          if (poliza != null)
+          {
+            poliza.Marca = marcaText.Text;
+            poliza.Modelo = modeloText.Text;
+            poliza.Anio = anioText.Text;
+            poliza.Placa = placaText.Text;
+            poliza.Color = colorAutoText.Text;
+            poliza.Prima = primaNum.Value;
+            poliza.ClienteId = (int)clienteCombobox.SelectedValue;
+            poliza.Tipo = tipoPolizaText.Text;
+            poliza.EstadoPoliza = estadoText.Text;
+            poliza.MontoCobertura = montoCoberturaNum.Value;
+            poliza.FechaEmision = fechaEmision.Value;
+            poliza.FechaVencimiento = fechaVencimiento.Value;
+          }
         }
         else
         {
+          // Crear una nueva póliza
           var poliza = new Poliza()
           {
             Marca = marcaText.Text,
@@ -140,8 +158,12 @@ namespace AgenciaSeguros.Vistas.Componentes
       this.Close();
     }
 
+    /// <summary>
+    /// Valida los campos del formulario y habilita o deshabilita el botón de guardar.
+    /// </summary>
     private void ValidateForm()
     {
+      // Validaciones de los campos del formulario.
       bool fechaValida = fechaEmision.Value <= fechaVencimiento.Value;
       bool marcaValida = !string.IsNullOrEmpty(marcaText.Text) && marcaText.Text.Length <= 50;
       bool modeloValido = !string.IsNullOrEmpty(modeloText.Text) && modeloText.Text.Length <= 50;
@@ -156,6 +178,7 @@ namespace AgenciaSeguros.Vistas.Componentes
 
       btnGuardar.Enabled = fechaValida && marcaValida && modeloValido && anioValido && placaValida && colorValido && primaValida && clienteValido && tipoValido && estadoValido && montoValido;
 
+      // Asignar mensajes de error a los campos si no son válidos.
       if (!fechaValida)
       {
         errorProvider1.SetError(fechaEmision, "La fecha de emisión debe ser menor o igual a la fecha de vencimiento");

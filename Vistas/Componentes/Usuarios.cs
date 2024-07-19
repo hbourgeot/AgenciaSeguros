@@ -13,26 +13,39 @@ using System.Windows.Forms;
 
 namespace AgenciaSeguros.Vistas.Componentes
 {
+  /// <summary>
+  /// Formulario para agregar o editar usuarios.
+  /// </summary>
   public partial class Usuarios : Form
   {
-    private int? _usuarioId;
+    private int? _usuarioId; // ID del usuario a editar, si es null se creará un nuevo usuario
+    private bool showPassword = false; // Variable para mostrar u ocultar la contraseña
 
-    private bool showPassword = false;
-
+    /// <summary>
+    /// Obtiene el estado de visibilidad de la contraseña.
+    /// </summary>
+    /// <returns>True si la contraseña está visible, False en caso contrario.</returns>
     private bool getShowPassword()
     {
       return showPassword;
     }
 
+    /// <summary>
+    /// Establece el estado de visibilidad de la contraseña.
+    /// </summary>
+    /// <param name="value">True para mostrar la contraseña, False para ocultarla.</param>
     private void setShowPassword(bool value)
     {
       showPassword = value;
     }
 
+    /// <summary>
+    /// Constructor del formulario Usuarios.
+    /// </summary>
+    /// <param name="clienteId">ID del usuario a editar, si es null se creará un nuevo usuario.</param>
     public Usuarios(int? clienteId)
     {
       InitializeComponent();
-
       _usuarioId = clienteId;
       if (_usuarioId.HasValue)
       {
@@ -41,6 +54,7 @@ namespace AgenciaSeguros.Vistas.Componentes
         this.Text = $"Editar Usuario #{_usuarioId.Value}";
       }
 
+      // Asignar eventos de validación a los campos del formulario.
       btnGuardar.Enabled = false;
       correoText.TextChanged += new EventHandler(ValidateForm);
       claveText.TextChanged += new EventHandler(ValidateForm);
@@ -51,6 +65,9 @@ namespace AgenciaSeguros.Vistas.Componentes
       radioButton2.CheckedChanged += new EventHandler(ValidateForm);
     }
 
+    /// <summary>
+    /// Carga los datos del usuario desde la base de datos si se está editando.
+    /// </summary>
     private void LoadClienteData()
     {
       using (var context = new AppDbContext())
@@ -64,11 +81,14 @@ namespace AgenciaSeguros.Vistas.Componentes
           comboRol.Text = cliente.Rol;
           edadNum.Value = cliente.Edad;
           radioButton1.Checked = cliente.activo;
-          radioButton2.Checked = !cliente.activo;          
+          radioButton2.Checked = !cliente.activo;
         }
       }
     }
 
+    /// <summary>
+    /// Valida los campos del formulario y habilita o deshabilita el botón de guardar.
+    /// </summary>
     private void ValidateForm(object sender, EventArgs e)
     {
       bool isEmailValid = ValidateEmail(correoText.Text);
@@ -81,6 +101,7 @@ namespace AgenciaSeguros.Vistas.Componentes
 
       btnGuardar.Enabled = isEmailValid && isPasswordFilled && nombreCompleto && telefonoLlenado && rolSeleccionado && (radioButton1.Checked || radioButton2.Checked);
 
+      // Asignar mensajes de error a los campos si no son válidos.
       if (!isEmailValid)
       {
         errorProvider1.SetError(correoText, "Correo electrónico no válido.");
@@ -103,7 +124,7 @@ namespace AgenciaSeguros.Vistas.Componentes
       {
         errorProvider1.SetError(nombreText, "El nombre no puede estar vacío.");
       }
-      else if (!nombreMenorQue200) 
+      else if (!nombreMenorQue200)
       {
         errorProvider1.SetError(nombreText, "El nombre del usuario no puede tener más de 200 caracteres");
       }
@@ -115,25 +136,36 @@ namespace AgenciaSeguros.Vistas.Componentes
       if (!telefonoLlenado)
       {
         errorProvider1.SetError(telefonoText, "El teléfono debe ser llenado");
-      } else       {
+      }
+      else
+      {
         errorProvider1.SetError(telefonoText, string.Empty);
       }
 
       if (!rolSeleccionado)
       {
         errorProvider1.SetError(comboRol, "Debe seleccionar un rol");
-      } else
+      }
+      else
       {
         errorProvider1.SetError(comboRol, string.Empty);
       }
     }
 
+    /// <summary>
+    /// Valida el formato del correo electrónico.
+    /// </summary>
+    /// <param name="email">Correo electrónico a validar.</param>
+    /// <returns>True si el formato es válido, False en caso contrario.</returns>
     private bool ValidateEmail(string email)
     {
       string pattern = @"^[^@\s]+@[^@\s]+\.[^@\s]+$";
       return Regex.IsMatch(email, pattern);
     }
 
+    /// <summary>
+    /// Evento al hacer clic en el botón de mostrar/ocultar contraseña.
+    /// </summary>
     private void btnMostrar_Click(object sender, EventArgs e)
     {
       setShowPassword(!getShowPassword());
@@ -149,9 +181,12 @@ namespace AgenciaSeguros.Vistas.Componentes
       }
     }
 
+    /// <summary>
+    /// Evento al hacer clic en el botón de guardar. Guarda o actualiza los datos del usuario.
+    /// </summary>
     private void btnGuardar_Click(object sender, EventArgs e)
     {
-      // guarda el usuario en base de datos, si el _usuarioId tiene valor, entonces se actualiza
+      // Guardar el usuario en la base de datos, si el _usuarioId tiene valor, entonces se actualiza
       setShowPassword(false);
       string nombre = nombreText.Text;
       string correo = correoText.Text;
@@ -166,6 +201,7 @@ namespace AgenciaSeguros.Vistas.Componentes
       {
         if (_usuarioId.HasValue)
         {
+          // Actualizar usuario existente.
           var usuario = context.Usuarios.Find(_usuarioId.Value);
           usuario.Nombre = nombre;
           usuario.Correo = correo;
@@ -180,6 +216,7 @@ namespace AgenciaSeguros.Vistas.Componentes
         }
         else
         {
+          // Crear un nuevo usuario.
           var usuario = new Usuario()
           {
             Nombre = nombre,
@@ -199,6 +236,9 @@ namespace AgenciaSeguros.Vistas.Componentes
       this.Close();
     }
 
+    /// <summary>
+    /// Evento al hacer clic en el botón de cancelar. Cierra el formulario actual.
+    /// </summary>
     private void button2_Click(object sender, EventArgs e)
     {
       this.Close();

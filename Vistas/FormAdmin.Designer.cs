@@ -77,10 +77,6 @@
       ((System.ComponentModel.ISupportInitialize)(this.reclamosData)).BeginInit();
       this.SuspendLayout();
       // 
-      // toolTip
-      // 
-      this.toolTip.Popup += new System.Windows.Forms.PopupEventHandler(this.toolTip_Popup);
-      // 
       // tabControl1
       // 
       this.tabControl1.Controls.Add(this.tabPage7);
@@ -121,7 +117,6 @@
       this.tabPage7.Size = new System.Drawing.Size(891, 547);
       this.tabPage7.TabIndex = 6;
       this.tabPage7.Text = "Inicio";
-      this.tabPage7.Click += new System.EventHandler(this.tabPage7_Click);
       // 
       // button13
       // 
@@ -136,7 +131,6 @@
       this.button13.TabIndex = 13;
       this.button13.Text = "Reportes de datos";
       this.button13.UseVisualStyleBackColor = false;
-      this.button13.Click += new System.EventHandler(this.button13_Click);
       // 
       // button14
       // 
@@ -150,7 +144,6 @@
       this.button14.TabIndex = 12;
       this.button14.Text = "Reportes de Pólizas";
       this.button14.UseVisualStyleBackColor = true;
-      this.button14.Click += new System.EventHandler(this.button14_Click);
       // 
       // button9
       // 
@@ -190,7 +183,6 @@
       this.label2.Size = new System.Drawing.Size(50, 13);
       this.label2.TabIndex = 9;
       this.label2.Text = "Reportes";
-      this.label2.Click += new System.EventHandler(this.label2_Click);
       // 
       // button10
       // 
@@ -292,7 +284,6 @@
       this.label1.Size = new System.Drawing.Size(104, 13);
       this.label1.TabIndex = 0;
       this.label1.Text = "Operaciones rápidas";
-      this.label1.Click += new System.EventHandler(this.label1_Click);
       // 
       // usuariosTab
       // 
@@ -306,7 +297,6 @@
       this.usuariosTab.Size = new System.Drawing.Size(891, 547);
       this.usuariosTab.TabIndex = 0;
       this.usuariosTab.Text = "Usuarios";
-      this.usuariosTab.Click += new System.EventHandler(this.usuariosTab_Click);
       // 
       // label3
       // 
@@ -317,7 +307,6 @@
       this.label3.Size = new System.Drawing.Size(48, 13);
       this.label3.TabIndex = 1;
       this.label3.Text = "Usuarios";
-      this.label3.Click += new System.EventHandler(this.label3_Click);
       // 
       // usuariosData
       // 
@@ -338,7 +327,6 @@
       this.usuariosData.ShowRowErrors = false;
       this.usuariosData.Size = new System.Drawing.Size(843, 463);
       this.usuariosData.TabIndex = 0;
-      this.usuariosData.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.usuariosData_CellContentClick);
       this.usuariosData.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellDoubleClick);
       // 
       // polizasPage
@@ -353,7 +341,6 @@
       this.polizasPage.Size = new System.Drawing.Size(891, 547);
       this.polizasPage.TabIndex = 1;
       this.polizasPage.Text = "Pólizas";
-      this.polizasPage.Click += new System.EventHandler(this.polizasPage_Click);
       // 
       // label5
       // 
@@ -364,7 +351,6 @@
       this.label5.Size = new System.Drawing.Size(40, 13);
       this.label5.TabIndex = 5;
       this.label5.Text = "Pólizas";
-      this.label5.Click += new System.EventHandler(this.label5_Click);
       // 
       // polizasData
       // 
@@ -399,7 +385,6 @@
       this.clientesPage.Size = new System.Drawing.Size(891, 547);
       this.clientesPage.TabIndex = 2;
       this.clientesPage.Text = "Clientes";
-      this.clientesPage.Click += new System.EventHandler(this.clientesPage_Click);
       // 
       // label4
       // 
@@ -410,7 +395,6 @@
       this.label4.Size = new System.Drawing.Size(44, 13);
       this.label4.TabIndex = 3;
       this.label4.Text = "Clientes";
-      this.label4.Click += new System.EventHandler(this.label4_Click);
       // 
       // clientesData
       // 
@@ -445,7 +429,6 @@
       this.pagosPage.Size = new System.Drawing.Size(891, 547);
       this.pagosPage.TabIndex = 3;
       this.pagosPage.Text = "Pagos";
-      this.pagosPage.Click += new System.EventHandler(this.pagosPage_Click);
       // 
       // label6
       // 
@@ -456,7 +439,6 @@
       this.label6.Size = new System.Drawing.Size(37, 13);
       this.label6.TabIndex = 5;
       this.label6.Text = "Pagos";
-      this.label6.Click += new System.EventHandler(this.label6_Click);
       // 
       // pagosData
       // 
@@ -477,7 +459,6 @@
       this.pagosData.ShowRowErrors = false;
       this.pagosData.Size = new System.Drawing.Size(843, 463);
       this.pagosData.TabIndex = 4;
-      this.pagosData.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.pagosData_CellContentClick);
       this.pagosData.CellContentDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.pagosData_CellContentDoubleClick);
       // 
       // reclamosPage
@@ -492,7 +473,6 @@
       this.reclamosPage.Size = new System.Drawing.Size(891, 547);
       this.reclamosPage.TabIndex = 4;
       this.reclamosPage.Text = "Reclamos";
-      this.reclamosPage.Click += new System.EventHandler(this.reclamosPage_Click);
       // 
       // label7
       // 
@@ -503,7 +483,6 @@
       this.label7.Size = new System.Drawing.Size(54, 13);
       this.label7.TabIndex = 7;
       this.label7.Text = "Reclamos";
-      this.label7.Click += new System.EventHandler(this.label7_Click);
       // 
       // reclamosData
       // 
@@ -524,7 +503,6 @@
       this.reclamosData.ShowRowErrors = false;
       this.reclamosData.Size = new System.Drawing.Size(843, 463);
       this.reclamosData.TabIndex = 6;
-      this.reclamosData.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.reclamosData_CellContentClick);
       this.reclamosData.CellContentDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.reclamosData_CellContentDoubleClick);
       // 
       // button1

@@ -6,9 +6,17 @@ using System.Windows.Forms;
 
 namespace AgenciaSeguros.Vistas.Componentes
 {
+  /// <summary>
+  /// Formulario para agregar o editar un reclamo.
+  /// </summary>
   public partial class Reclamos : Form
   {
     private int? _reclamoId;
+
+    /// <summary>
+    /// Constructor del formulario Reclamos.
+    /// </summary>
+    /// <param name="reclamoId">ID del reclamo a editar, si es null se creará un nuevo reclamo.</param>
     public Reclamos(int? reclamoId)
     {
       InitializeComponent();
@@ -24,19 +32,23 @@ namespace AgenciaSeguros.Vistas.Componentes
       }
       LoadReclamoData();
 
+      // Asignar eventos de validación a los campos del formulario.
       estadoCombobox.SelectedValueChanged += (s, e) => ValidateForm();
       polizasCombobox.SelectedValueChanged += (s, e) => ValidateForm();
       clienteCombobox.SelectedValueChanged += (s, e) => ValidateForm();
       descripcionText.TextChanged += (s, e) => ValidateForm();
 
-      btnGuardar.Enabled = false;
+      btnGuardar.Enabled = false; // Deshabilitar el botón de guardar inicialmente
     }
 
+    /// <summary>
+    /// Carga los datos del reclamo desde la base de datos si se está editando, y los clientes para el ComboBox.
+    /// </summary>
     private void LoadReclamoData()
     {
       using (var context = new AppDbContext())
       {
-        // Cargar el combobox con los clientes, mostrando el nombre y el id debe ser el valor
+        // Cargar el ComboBox con los clientes, mostrando el nombre y el ID debe ser el valor.
         clienteCombobox.DataSource = context.Clientes.Select(c => new
         {
           c.Id,
@@ -50,6 +62,7 @@ namespace AgenciaSeguros.Vistas.Componentes
           return;
         }
 
+        // Cargar los datos del reclamo si se está editando.
         var reclamo = context.Reclamos.Find(_reclamoId.Value);
         if (reclamo != null)
         {
@@ -58,7 +71,7 @@ namespace AgenciaSeguros.Vistas.Componentes
           polizasCombobox.SelectedValue = reclamo.PolizaId;
           descripcionText.Text = reclamo.Descripcion;
 
-          // Cargar las pólizas del cliente seleccionado
+          // Cargar las pólizas del cliente seleccionado.
           var clienteId = reclamo.ClienteId;
           polizasCombobox.DataSource = context.Polizas
               .Where(p => p.ClienteId == clienteId)
@@ -75,25 +88,36 @@ namespace AgenciaSeguros.Vistas.Componentes
       }
     }
 
+    /// <summary>
+    /// Evento al hacer clic en el botón de cancelar. Cierra el formulario actual.
+    /// </summary>
     private void button2_Click(object sender, EventArgs e)
     {
       this.Close();
     }
 
+    /// <summary>
+    /// Evento al hacer clic en el botón de guardar. Guarda o actualiza los datos del reclamo.
+    /// </summary>
     private void btnGuardar_Click(object sender, EventArgs e)
     {
       using (var context = new AppDbContext())
       {
         if (_reclamoId.HasValue)
         {
+          // Actualizar reclamo existente.
           var reclamo = context.Reclamos.Find(_reclamoId.Value);
-          reclamo.Estado = estadoCombobox.SelectedItem.ToString();
-          reclamo.ClienteId = (int)clienteCombobox.SelectedValue;
-          reclamo.PolizaId = (int)polizasCombobox.SelectedValue;
-          reclamo.Descripcion = descripcionText.Text;
+          if (reclamo != null)
+          {
+            reclamo.Estado = estadoCombobox.SelectedItem.ToString();
+            reclamo.ClienteId = (int)clienteCombobox.SelectedValue;
+            reclamo.PolizaId = (int)polizasCombobox.SelectedValue;
+            reclamo.Descripcion = descripcionText.Text;
+          }
         }
         else
         {
+          // Crear un nuevo reclamo.
           var reclamo = new Reclamo()
           {
             Descripcion = descripcionText.Text,
@@ -112,8 +136,12 @@ namespace AgenciaSeguros.Vistas.Componentes
       this.Close();
     }
 
+    /// <summary>
+    /// Valida los campos del formulario y habilita o deshabilita el botón de guardar.
+    /// </summary>
     private void ValidateForm()
     {
+      // Validaciones de los campos del formulario.
       bool descripcionValida = !string.IsNullOrEmpty(descripcionText.Text) && descripcionText.Text.Length <= 200;
       bool clienteValido = clienteCombobox.SelectedValue != null;
       bool estadoValido = estadoCombobox.SelectedItem != null;
@@ -121,6 +149,7 @@ namespace AgenciaSeguros.Vistas.Componentes
 
       btnGuardar.Enabled = descripcionValida && clienteValido && estadoValido && polizaValida;
 
+      // Asignar mensajes de error a los campos si no son válidos.
       if (!clienteValido)
       {
         errorProvider1.SetError(clienteCombobox, "El cliente es requerido");
@@ -129,7 +158,7 @@ namespace AgenciaSeguros.Vistas.Componentes
       {
         errorProvider1.SetError(clienteCombobox, "");
 
-        // Encontrar todas las pólizas del cliente seleccionado, mostrando como texto la unión entre la marca, modelo, año y placa
+        // Encontrar todas las pólizas del cliente seleccionado, mostrando como texto la unión entre la marca, modelo, año y placa.
         using (var context = new AppDbContext())
         {
           var clienteId = (int)clienteCombobox.SelectedValue;

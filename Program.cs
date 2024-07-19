@@ -13,17 +13,20 @@ using System.Windows.Forms;
 
 namespace AgenciaSeguros
 {
+  /// Clase principal del programa que gestiona la inicialización y el arranque de la aplicación.
   internal static class Program
   {
-    /// <summary>
-    /// The main entry point for the application.
-    /// </summary>
+    /// Punto de entrada principal para la aplicación.
     [STAThread]
     static void Main()
     {
+      // Habilitar estilos visuales para la aplicación
       Application.EnableVisualStyles();
       Application.SetCompatibleTextRenderingDefault(false);
+      
+      // Cargar las ensambladuras nativas de SqlServerTypes
       SqlServerTypes.Utilities.LoadNativeAssemblies(AppDomain.CurrentDomain.BaseDirectory);
+      
       // Asegurarse de que el directorio de datos existe
       string dataDirectory = AppDomain.CurrentDomain.GetData("DataDirectory")?.ToString();
       if (dataDirectory == null)
@@ -32,8 +35,11 @@ namespace AgenciaSeguros
         AppDomain.CurrentDomain.SetData("DataDirectory", dataDirectory);
       }
 
+      // Ruta del archivo de la base de datos
       string databaseFile = Path.Combine(dataDirectory, "AgenciaSeguros.db");
       System.Console.WriteLine($"Database file: {databaseFile}");
+      
+      // Crear el archivo de base de datos si no existe
       if (!File.Exists(databaseFile))
       {
         SQLiteConnection.CreateFile(databaseFile);
@@ -63,9 +69,13 @@ namespace AgenciaSeguros
         }
       }
 
+      // Ejecutar el formulario principal de la aplicación
       Application.Run(new AgenciaSeguros.Vistas.Form1());
     }
 
+    /// Lee los usuarios desde un archivo Excel.
+    /// <param name="filePath">Ruta del archivo Excel.</param>
+    /// <returns>Lista de usuarios leídos del archivo Excel.</returns>
     static List<Usuario> ReadUsersFromFile(string filePath)
     {
       var usuarios = new List<Usuario>();
@@ -99,6 +109,9 @@ namespace AgenciaSeguros
       return usuarios;
     }
 
+    /// Registra usuarios en la base de datos.
+    /// <param name="usuarios">Lista de usuarios a registrar.</param>
+    /// <param name="context">Contexto de base de datos.</param>
     static void RegisterUsers(List<Usuario> usuarios, AppDbContext context)
     {
       foreach (var usuario in usuarios)
@@ -106,12 +119,13 @@ namespace AgenciaSeguros
         // Validar si el correo ya existe
         if (!context.Usuarios.Any(u => u.Correo == usuario.Correo))
         {
+          // Hashear la contraseña antes de guardarla
           usuario.Contraseña = BCrypt.Net.BCrypt.HashPassword(usuario.Contraseña);
           context.Usuarios.Add(usuario); // Asegúrate de que 'Usuarios' es el DbSet para la entidad Usuario
         }
         else
         {
-          Console.WriteLine($"El usuario con correo {usuario.Correo} ya existe y no será registrado.");
+          MessageBox.Show($"El usuario con correo {usuario.Correo} ya existe y no será registrado.", "Cargar Usuarios", MessageBoxButtons.OK, MessageBoxIcon.Warning);
         }
       }
       context.SaveChanges();
