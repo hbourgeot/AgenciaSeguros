@@ -49,7 +49,7 @@ namespace AgenciaSeguros.Entidades
     /// <summary>
     /// Indicador de si el usuario está activo.
     /// </summary>
-    public bool Activo { get; set; } = false;
+    public bool activo { get; set; } = false;
 
     /// <summary>
     /// Rol del usuario (Administrador o Usuario Regular).
